@@ -1,10 +1,22 @@
-import { Link } from 'react-router-dom';
-import { Button, Col, Image, ListGroup, Row } from 'react-bootstrap';
-import Rating from '../components/Rating';
-import products from '../products';
+import { Link } from 'react-router-dom'
+import { Button, Col, Image, ListGroup, Row } from 'react-bootstrap'
+import Rating from '../components/Rating'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 const ProductScreen = ({ match }) => {
-  const product = products.find((p) => p._id === match.params.id);
+
+  const [product, setProduct] = useState({})
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const { data } = await axios.get(`/api/products/${match.params.id}`)
+      setProduct(data)
+
+    }
+    fetchProduct()
+  }, [match.params.id])
+
 
   return (
     <>
@@ -59,7 +71,7 @@ const ProductScreen = ({ match }) => {
         </Col>
       </Row>
     </>
-  );
-};
+  )
+}
 
-export default ProductScreen;
+export default ProductScreen
